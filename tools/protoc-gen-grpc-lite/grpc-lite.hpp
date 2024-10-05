@@ -5,14 +5,14 @@
 #include <cstdint>
 #include <string>
 
-class Grpcxx 
+class Generator 
     : public google::protobuf::compiler::CodeGenerator 
 {
 public:
-    ~Grpcxx() 
+    ~Generator() 
     {}
 
-    Grpcxx() 
+    Generator() 
     {}
 
     bool Generate(

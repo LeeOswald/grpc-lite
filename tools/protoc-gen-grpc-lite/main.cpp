@@ -4,6 +4,6 @@
 
 int main(int argc, char *argv[]) 
 {
-    Grpcxx g;
+    Generator g;
     return google::protobuf::compiler::PluginMain(argc, argv, &g);
 }
