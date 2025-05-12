@@ -11,6 +11,7 @@ target_sources(${TARGET_NAME}
 		BASE_DIRS ${GRPC_LITE_INCLUDE_DIR}
 		FILES
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/grpc-lite.hxx
+            ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/status.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/detail/fixed_string.hxx
 			${GRPC_LITE_INCLUDE_DIR}/grpc-lite/detail/message.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/detail/request.hxx
