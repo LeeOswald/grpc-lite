@@ -15,6 +15,7 @@ target_sources(${TARGET_NAME}
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/detail/fixed_string.hxx
 			${GRPC_LITE_INCLUDE_DIR}/grpc-lite/detail/message.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/detail/request.hxx
+            ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/detail/response.hxx
 )
 
 set_property(TARGET ${TARGET_NAME} PROPERTY PREFIX "")
