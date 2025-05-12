@@ -7,12 +7,14 @@ target_sources(${TARGET_NAME}
         context.cxx
 		detail/message.cxx
         detail/request.cxx
+        server_base.cxx
 	PUBLIC
 		FILE_SET headers TYPE HEADERS
 		BASE_DIRS ${GRPC_LITE_INCLUDE_DIR}
 		FILES
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/context.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/grpc-lite.hxx
+            ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/server_base.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/status.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/detail/fixed_string.hxx
 			${GRPC_LITE_INCLUDE_DIR}/grpc-lite/detail/message.hxx
