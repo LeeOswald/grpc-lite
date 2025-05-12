@@ -5,12 +5,14 @@ add_library(${TARGET_NAME} SHARED)
 target_sources(${TARGET_NAME}
 	PRIVATE
 		detail/message.cxx
+        detail/request.cxx
 	PUBLIC
 		FILE_SET headers TYPE HEADERS
 		BASE_DIRS ${GRPC_LITE_INCLUDE_DIR}
 		FILES
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/grpc-lite.hxx
 			${GRPC_LITE_INCLUDE_DIR}/grpc-lite/detail/message.hxx
+            ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/detail/request.hxx
 )
 
 set_property(TARGET ${TARGET_NAME} PROPERTY PREFIX "")
