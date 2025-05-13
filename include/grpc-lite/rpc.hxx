@@ -30,7 +30,7 @@ struct rpc
 
     request_type map(std::string_view data) const 
     {
-        GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+        GrpcLiteVerboseBlock("{}.rpc::map(len={})", fmt::ptr(this), data.length());
 
         constexpr bool can_map = requires(request_type t) 
         {
@@ -51,7 +51,7 @@ struct rpc
 
     std::string map(const optional_response_type& res) const 
     {
-        GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+        GrpcLiteVerboseBlock("{}.rpc::map(res)", fmt::ptr(this));
 
         constexpr bool can_map = requires(response_type t) 
         {

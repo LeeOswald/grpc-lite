@@ -7,6 +7,7 @@ namespace grpc_lite::detail
 request::request(int32_t id) 
     : m_id(id) 
 {
+    GrpcLiteVerboseBlock("{}.request::request()", fmt::ptr(this));
 }
 
 request::operator bool() const noexcept 
@@ -16,7 +17,7 @@ request::operator bool() const noexcept
 
 void request::header(std::string&& name, std::string&& value) noexcept 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.request::header({}={})", fmt::ptr(this), name, value);
 
     // Avoid processing further if the request is already invalid
     if (invalid()) 
@@ -92,7 +93,7 @@ bool request::invalid() const noexcept
 
 void request::read(const std::string_view data) noexcept 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.request::read(len={})", fmt::ptr(this), data.length());
 
     if (invalid()) 
     {

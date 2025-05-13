@@ -12,6 +12,8 @@ message::message(std::string&& data)
     : m_data(std::move(data))
     , m_length(static_cast<std::uint32_t>(data.size())) 
 {
+    GrpcLiteVerboseBlock("{}.message::message()", fmt::ptr(this));
+
     std::uint32_t size = m_length.value();
 
     std::array<char, 5> bytes;
@@ -31,6 +33,8 @@ std::string message::bytes() const noexcept
 
 void message::bytes(std::string_view bytes) 
 {
+    GrpcLiteVerboseBlock("{}.message::bytes(len={})", fmt::ptr(this), bytes.length());
+
     if (m_length && m_data.size() >= m_length.value()) 
     {
         throw std::length_error("Message larger than what's indicated in the prefix.");
@@ -65,7 +69,7 @@ std::string_view message::data() const noexcept
 
 void message::parse() 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.message::parse()", fmt::ptr(this));
 
     if (m_length) 
     {

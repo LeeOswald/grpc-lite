@@ -11,11 +11,12 @@ namespace grpc_lite::asio::detail
 connection::connection(boost::asio::ip::tcp::socket&& sock) noexcept 
     : m_socket(std::move(sock)) 
 {
+    GrpcLiteVerboseBlock("{}.connection::connection()", fmt::ptr(this));
 }
 
 connection::requests_t connection::read(std::size_t n) 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.connection::read(n={})", fmt::ptr(this), n);
 
     requests_t reqs;
     for (auto &ev : m_session.read({ m_buffer.data(), n })) 
@@ -65,7 +66,7 @@ connection::requests_t connection::read(std::size_t n)
 
 boost::asio::awaitable<connection::requests_t> connection::reqs() noexcept 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.connection::reqs()", fmt::ptr(this));
 
     auto [ec, n] = co_await m_socket.async_read_some(
         boost::asio::buffer(m_buffer.data(), m_buffer.capacity()), 
@@ -97,7 +98,7 @@ boost::asio::awaitable<connection::requests_t> connection::reqs() noexcept
 
 boost::asio::awaitable<void> connection::write() 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.connection::write()", fmt::ptr(this));
 
     for (auto chunk = m_session.pending(); chunk.size() > 0; chunk = m_session.pending()) 
     {
@@ -107,7 +108,7 @@ boost::asio::awaitable<void> connection::write()
 
 boost::asio::awaitable<void> connection::write(::grpc_lite::detail::response resp) noexcept 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.connection::write(resp)", fmt::ptr(this));
 
     m_session.headers(
         resp.id(),

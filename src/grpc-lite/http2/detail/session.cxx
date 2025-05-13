@@ -14,7 +14,7 @@ session::session()
     , m_events()
     , m_session(nullptr) 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.session::session()", fmt::ptr(this));
 
     // initialize HTTP/2 session
     ::nghttp2_session_callbacks* callbacks;
@@ -45,14 +45,14 @@ session::session()
 
 session::~session() 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.session::~session()", fmt::ptr(this));
 
     ::nghttp2_session_del(m_session);
 }
 
 void session::data(std::int32_t stream_id, std::string&& data)
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.session::data(stream_id={})", fmt::ptr(this), stream_id);
 
     m_data = std::move(data);
     nghttp2_data_provider2 provider
@@ -74,11 +74,12 @@ int session::data_recv_cb(
     nghttp2_session* session, 
     std::uint8_t flags, 
     std::int32_t stream_id, 
-    const std::uint8_t* data, size_t len,
+    const std::uint8_t* data, 
+    size_t len,
     void* vsess
 ) 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("session::data_recv_cb(stream_id={}, len={})", stream_id, len);
 
     auto sess = static_cast<class session*>(vsess);
     sess->emit({
@@ -92,14 +93,14 @@ int session::data_recv_cb(
 
 void session::emit(event&& ev) noexcept 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.session::emit()", fmt::ptr(this));
 
     m_events.push_back(ev);
 }
 
 int session::frame_recv_cb(nghttp2_session* session, const nghttp2_frame* frame, void* vsess) 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("session::frame_recv_cb()");
 
     auto sess = static_cast<class session*>(vsess);
     if (0 != (frame->hd.flags & NGHTTP2_FLAG_END_STREAM)) 
@@ -124,7 +125,7 @@ int session::header_cb(
     void* vsess
 ) 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("session::header_cb()");
 
     auto sess = static_cast<class session*>(vsess);
     sess->emit({
@@ -142,7 +143,7 @@ int session::header_cb(
 
 void session::headers(std::int32_t stream_id, detail::headers hdrs) const 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.session::headers(stream_id={})", fmt::ptr(this), stream_id);
 
     std::vector<nghttp2_nv> nv;
     nv.reserve(hdrs.size());
@@ -180,7 +181,7 @@ void session::headers(std::int32_t stream_id, detail::headers hdrs) const
 
 std::string_view session::pending() 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.session::pending()", fmt::ptr(this));
 
     const uint8_t* bytes;
     auto n = ::nghttp2_session_mem_send2(m_session, &bytes);
@@ -194,7 +195,7 @@ std::string_view session::pending()
 
 session::events_t session::read(std::string_view bytes) 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.session::read(len={})", fmt::ptr(this), bytes.length());
 
     if (auto n = ::nghttp2_session_mem_recv2(m_session, reinterpret_cast<const uint8_t*>(bytes.data()), bytes.size()); n < 0) 
     {
@@ -217,7 +218,7 @@ nghttp2_ssize session::read_cb(
     void* vsess
 ) 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("session::read_cb(stream_id={}, length={})", stream_id, length);
 
     auto str = static_cast<std::string*>(source->ptr);
 
@@ -240,7 +241,7 @@ int session::stream_close_cb(
     void* vsess
 ) 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("session::read_cb(stream_id={}, error_code={})", stream_id, error_code);
 
     auto sess = static_cast<class session*>(vsess);
     sess->emit({
@@ -253,7 +254,7 @@ int session::stream_close_cb(
 
 void session::trailers(std::int32_t stream_id, detail::headers hdrs) const 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.session::trailers(stream_id={})", fmt::ptr(this), stream_id);
 
     std::vector<nghttp2_nv> nv;
     nv.reserve(hdrs.size());

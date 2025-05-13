@@ -9,7 +9,7 @@ namespace grpc_lite
 
 detail::response server_base::process(const detail::request& req) const noexcept 
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.server_base::process()", fmt::ptr(this));
 
     if (!req) 
     {
