@@ -1,8 +1,55 @@
+#include "echo.pb.h"
+
+#include <grpc-lite/rpc.hxx>
+#include <grpc-lite/server.hxx>
+#include <grpc-lite/service.hxx>
+
+
 #include <iostream>
+
+namespace echo
+{
+
+using RpcEcho = grpc_lite::rpc<"echo", echo::EchoRequest, echo::EchoResponse>;
+
+using Service = grpc_lite::service<"echo.Echo", RpcEcho>;
+
+struct EchoImpl 
+{
+    template <typename T>
+    typename T::result_type call(grpc_lite::context&, const typename T::request_type&) 
+    {
+        return { grpc_lite::status::code_t::unimplemented, std::nullopt };
+    }
+};
+
+
+template <>
+RpcEcho::result_type EchoImpl::call<RpcEcho>(grpc_lite::context&, const EchoRequest& req)
+{
+    EchoResponse res;
+    res.set_message("Hello `" + req.message());
+
+    return { grpc_lite::status::code_t::ok, res };
+}
+
+
+
+} // namespace echo {}
+
+
 
 
 int main(int argc, char** argv)
 {
-    
+    echo::EchoImpl impl;
+    echo::Service service(impl);
+
+    grpc_lite::server server;
+    server.add(service);
+
+    std::cout << "Listening on [127.0.0.1:7000]...\n";
+    server.run("127.0.0.1", 7000);
+
     return 0;
 }
