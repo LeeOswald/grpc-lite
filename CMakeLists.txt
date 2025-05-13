@@ -46,7 +46,7 @@ set(GRPC_LITE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 
 # Windows-specific settings
-if(ER_WINDOWS)
+if(GRPC_LITE_WINDOWS)
     add_definitions(-D_WIN32_WINNT=0x0602)
 endif()
 
