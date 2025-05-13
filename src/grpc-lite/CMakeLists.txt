@@ -5,6 +5,7 @@ add_library(${TARGET_NAME} SHARED)
 target_sources(${TARGET_NAME}
 	PRIVATE
         asio/detail/connection.cxx
+        asio/detail/server.cxx
         context.cxx
 		detail/message.cxx
         detail/request.cxx
@@ -15,6 +16,7 @@ target_sources(${TARGET_NAME}
 		BASE_DIRS ${GRPC_LITE_INCLUDE_DIR}
 		FILES
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/asio/detail/connection.hxx
+            ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/asio/detail/server.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/context.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/grpc-lite.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/http2/detail/event.hxx
