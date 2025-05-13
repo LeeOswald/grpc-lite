@@ -30,6 +30,8 @@ struct rpc
 
     request_type map(std::string_view data) const 
     {
+        GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
         constexpr bool can_map = requires(request_type t) 
         {
             { t.ParseFromArray(std::declval<const char*>(), std::declval<std::size_t>()) } -> std::same_as<bool>;
@@ -49,6 +51,8 @@ struct rpc
 
     std::string map(const optional_response_type& res) const 
     {
+        GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
         constexpr bool can_map = requires(response_type t) 
         {
             { t.SerializeToString(std::declval<std::string *>()) } -> std::same_as<bool>;

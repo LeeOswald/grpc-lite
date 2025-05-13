@@ -9,6 +9,8 @@ namespace grpc_lite
 
 detail::response server_base::process(const detail::request& req) const noexcept 
 {
+    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
     if (!req) 
     {
         return { req.id(), status::code_t::invalid_argument };

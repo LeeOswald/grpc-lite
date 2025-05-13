@@ -16,6 +16,8 @@ request::operator bool() const noexcept
 
 void request::header(std::string&& name, std::string&& value) noexcept 
 {
+    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
     // Avoid processing further if the request is already invalid
     if (invalid()) 
     {
@@ -90,6 +92,8 @@ bool request::invalid() const noexcept
 
 void request::read(const std::string_view data) noexcept 
 {
+    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
     if (invalid()) 
     {
         return;

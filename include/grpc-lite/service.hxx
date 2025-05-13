@@ -62,13 +62,21 @@ public:
     template <typename I> 
     constexpr explicit service(I& impl) 
     {
+        GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
         std::apply(
             [&](auto&&...args) 
             {
+                GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
                 auto helper = [&](const auto& rpc) 
                 {
+                    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
                     auto handler = [&impl, &rpc](context& ctx, std::string_view data) -> response_t 
                     {
+                        GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
                         using type = std::remove_cvref_t<decltype(rpc)>;
 
                         auto req = rpc.map(data);
@@ -88,6 +96,8 @@ public:
 
     response_t call(context &ctx, std::string_view method, std::string_view data) 
     {
+        GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
         auto it = m_handlers.find(method);
         if (it == m_handlers.end()) 
         {

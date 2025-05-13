@@ -65,6 +65,8 @@ std::string_view message::data() const noexcept
 
 void message::parse() 
 {
+    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
     if (m_length) 
     {
         // Already parsed

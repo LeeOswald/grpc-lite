@@ -19,6 +19,8 @@ struct EchoImpl
     template <typename T>
     typename T::result_type call(grpc_lite::context&, const typename T::request_type&) 
     {
+        GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
         return { grpc_lite::status::code_t::unimplemented, std::nullopt };
     }
 };
@@ -27,6 +29,8 @@ struct EchoImpl
 template <>
 RpcEcho::result_type EchoImpl::call<RpcEcho>(grpc_lite::context&, const EchoRequest& req)
 {
+    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
     EchoResponse res;
     res.set_message("Hello `" + req.message());
 
@@ -42,6 +46,8 @@ RpcEcho::result_type EchoImpl::call<RpcEcho>(grpc_lite::context&, const EchoRequ
 
 int main(int argc, char** argv)
 {
+    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
     echo::EchoImpl impl;
     echo::Service service(impl);
 

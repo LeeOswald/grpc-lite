@@ -7,11 +7,22 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
+option(GRPC_LITE_ENABLE_LOG "Enable logging" ON)
+if(GRPC_LITE_ENABLE_LOG)
+    add_definitions(-DGRPC_LITE_ENABLE_LOG=1)
+endif()
+
+option(GRPC_LITE_VERBOSE_LOG "Enable verbose logging" ON)
+if(GRPC_LITE_VERBOSE_LOG)
+    add_definitions(-DGRPC_LITE_VERBOSE_LOG=1)
+endif()
+
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 project(grpc-lite VERSION 0.1)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")

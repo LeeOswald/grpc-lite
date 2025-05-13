@@ -7,6 +7,7 @@ target_sources(${TARGET_NAME}
         asio/detail/connection.cxx
         asio/detail/server.cxx
         context.cxx
+        debug.cxx
 		detail/message.cxx
         detail/request.cxx
         http2/detail/session.cxx
@@ -18,6 +19,7 @@ target_sources(${TARGET_NAME}
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/asio/detail/connection.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/asio/detail/server.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/context.hxx
+            ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/debug.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/detail/fixed_string.hxx
 			${GRPC_LITE_INCLUDE_DIR}/grpc-lite/detail/message.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/detail/request.hxx
@@ -38,4 +40,4 @@ set_property(TARGET ${TARGET_NAME} PROPERTY PREFIX "")
 
 target_compile_definitions(${TARGET_NAME} PRIVATE GRPC_LITE_EXPORTS)
 
-target_link_libraries(${TARGET_NAME} libnghttp2::libnghttp2)
+target_link_libraries(${TARGET_NAME} PUBLIC libnghttp2::libnghttp2 fmt::fmt)

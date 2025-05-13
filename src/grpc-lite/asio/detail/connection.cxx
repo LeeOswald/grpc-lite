@@ -15,6 +15,8 @@ connection::connection(boost::asio::ip::tcp::socket&& sock) noexcept
 
 connection::requests_t connection::read(std::size_t n) 
 {
+    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
     requests_t reqs;
     for (auto &ev : m_session.read({ m_buffer.data(), n })) 
     {
@@ -63,6 +65,8 @@ connection::requests_t connection::read(std::size_t n)
 
 boost::asio::awaitable<connection::requests_t> connection::reqs() noexcept 
 {
+    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
     auto [ec, n] = co_await m_socket.async_read_some(
         boost::asio::buffer(m_buffer.data(), m_buffer.capacity()), 
         boost::asio::as_tuple(boost::asio::use_awaitable)
@@ -93,6 +97,8 @@ boost::asio::awaitable<connection::requests_t> connection::reqs() noexcept
 
 boost::asio::awaitable<void> connection::write() 
 {
+    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
     for (auto chunk = m_session.pending(); chunk.size() > 0; chunk = m_session.pending()) 
     {
         co_await boost::asio::async_write(m_socket, boost::asio::buffer(chunk), boost::asio::use_awaitable);
@@ -101,6 +107,8 @@ boost::asio::awaitable<void> connection::write()
 
 boost::asio::awaitable<void> connection::write(::grpc_lite::detail::response resp) noexcept 
 {
+    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+
     m_session.headers(
         resp.id(),
         {

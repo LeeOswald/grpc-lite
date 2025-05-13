@@ -10,3 +10,7 @@
 #else
     #define GRPC_LITE_EXPORT __attribute__((visibility("default")))
 #endif
+
+#define GRPC_LITE_HXX_INCLUDED 1
+
+#include <grpc-lite/debug.hxx>
