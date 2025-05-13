@@ -26,6 +26,7 @@ target_sources(${TARGET_NAME}
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/http2/detail/event.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/http2/detail/headers.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/http2/detail/session.hxx
+            ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/rpc.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/server.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/server_base.hxx
             ${GRPC_LITE_INCLUDE_DIR}/grpc-lite/service.hxx
