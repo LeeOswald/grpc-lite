@@ -11,11 +11,11 @@ namespace detail
 {
 
 template <class CharT, std::size_t N> 
-struct basic_fixed_string 
+struct BasicFixedString 
 {
     using value_type = CharT;
 
-    constexpr basic_fixed_string(const value_type(&str)[N + 1]) noexcept 
+    constexpr BasicFixedString(const value_type(&str)[N + 1]) noexcept 
     {
         std::copy_n(str, N + 1, value);
     }
@@ -26,7 +26,7 @@ struct basic_fixed_string
     }
 
     template <std::size_t M>
-    constexpr auto operator==(const basic_fixed_string<value_type, M>& rhs) const noexcept 
+    constexpr auto operator==(const BasicFixedString<value_type, M>& rhs) const noexcept 
     {
         return (N == M && view() == rhs.view());
     }
@@ -54,17 +54,17 @@ struct basic_fixed_string
 
 
 template <std::size_t N> 
-struct fixed_string 
-    : detail::basic_fixed_string<char, N - 1> 
+struct FixedString 
+    : detail::BasicFixedString<char, N - 1> 
 {
-    constexpr fixed_string(const char(&str)[N]) noexcept 
-        : detail::basic_fixed_string<char, N - 1>(str) 
+    constexpr FixedString(const char(&str)[N]) noexcept 
+        : detail::BasicFixedString<char, N - 1>(str) 
     {}
 };
 
 
-template <fixed_string T> 
-struct fixed_string_t 
+template <FixedString T> 
+struct StringLiteral 
 {
 };
 

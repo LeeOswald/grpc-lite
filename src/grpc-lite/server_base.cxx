@@ -7,23 +7,23 @@
 namespace grpc_lite
 {
 
-detail::response server_base::process(const detail::request& req) const noexcept 
+detail::Response ServerBase::process(const detail::Request& req) const noexcept 
 {
-    GrpcLiteVerboseBlock("{}.server_base::process()", fmt::ptr(this));
+    GrpcLiteVerboseBlock("{}.ServerBase::process()", fmt::ptr(this));
 
     if (!req) 
     {
-        return { req.id(), status::code_t::invalid_argument };
+        return { req.id(), Status::Code::invalid_argument };
     }
 
     auto it = m_services.find(req.service());
     if (it == m_services.end()) 
     {
-        return { req.id(), status::code_t::not_found };
+        return { req.id(), Status::Code::not_found };
     }
 
-    context ctx(req);
-    detail::response resp(req.id());
+    Context ctx(req);
+    detail::Response resp(req.id());
 
     try 
     {
@@ -33,7 +33,7 @@ detail::response server_base::process(const detail::request& req) const noexcept
     }
     catch (std::exception& e) 
     {
-        return { req.id(), status::code_t::internal };
+        return { req.id(), Status::Code::internal };
     }
 
     return resp;

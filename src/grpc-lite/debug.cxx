@@ -54,6 +54,7 @@ void defaultTracer(Level level, std::uint32_t indent, std::string_view message)
         std::osyncstream(std::cerr) << msg;
 
 #if GRPC_LITE_WINDOWS
+    if (::IsDebuggerPresent())
     {
         std::wstring out;
 

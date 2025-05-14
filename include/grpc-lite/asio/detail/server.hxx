@@ -11,12 +11,12 @@
 namespace grpc_lite::asio::detail
 {
 
-class GRPC_LITE_EXPORT server 
-    : public ::grpc_lite::server_base 
+class GRPC_LITE_EXPORT Server 
+    : public ::grpc_lite::ServerBase 
 {
 public:
-    server(const server&) = delete;
-    server() = default;
+    Server(const Server&) = delete;
+    Server() = default;
 
     boost::asio::awaitable<void> listen(std::string_view ip, std::uint16_t port);
     void run(std::string_view ip, std::uint16_t port);

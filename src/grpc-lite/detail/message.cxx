@@ -1,4 +1,4 @@
-#include <grpc-lite/detail/message.hxx>
+#include <grpc-lite/detail/Message.hxx>
 
 #include <array>
 #include <stdexcept>
@@ -8,11 +8,11 @@
 namespace grpc_lite::detail
 {
 
-message::message(std::string&& data) 
+Message::Message(std::string&& data) 
     : m_data(std::move(data))
     , m_length(static_cast<std::uint32_t>(data.size())) 
 {
-    GrpcLiteVerboseBlock("{}.message::message()", fmt::ptr(this));
+    GrpcLiteVerboseBlock("{}.Message::Message()", fmt::ptr(this));
 
     std::uint32_t size = m_length.value();
 
@@ -26,14 +26,14 @@ message::message(std::string&& data)
     m_prefix = { bytes.data(), bytes.size() };
 }
 
-std::string message::bytes() const noexcept 
+std::string Message::bytes() const noexcept 
 {
     return m_prefix + m_data;
 }
 
-void message::bytes(std::string_view bytes) 
+void Message::bytes(std::string_view bytes) 
 {
-    GrpcLiteVerboseBlock("{}.message::bytes(len={})", fmt::ptr(this), bytes.length());
+    GrpcLiteVerboseBlock("{}.Message::bytes(len={})", fmt::ptr(this), bytes.length());
 
     if (m_length && m_data.size() >= m_length.value()) 
     {
@@ -57,7 +57,7 @@ void message::bytes(std::string_view bytes)
     }
 }
 
-std::string_view message::data() const noexcept 
+std::string_view Message::data() const noexcept 
 {
     if (!m_length || (m_data.size() != m_length.value())) 
     {
@@ -67,9 +67,9 @@ std::string_view message::data() const noexcept
     return m_data;
 }
 
-void message::parse() 
+void Message::parse() 
 {
-    GrpcLiteVerboseBlock("{}.message::parse()", fmt::ptr(this));
+    GrpcLiteVerboseBlock("{}.Message::parse()", fmt::ptr(this));
 
     if (m_length) 
     {
@@ -93,7 +93,7 @@ void message::parse()
     }
 }
 
-std::string_view message::prefix() const noexcept 
+std::string_view Message::prefix() const noexcept 
 {
     return m_prefix;
 }

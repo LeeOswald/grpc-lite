@@ -4,6 +4,7 @@ package echo;
 
 service Echo {
 	rpc echo(EchoRequest) returns (EchoResponse) {}
+    rpc spam(SpamRequest) returns (stream SpamResponse) {}
 }
 
 message EchoRequest {
@@ -12,4 +13,12 @@ message EchoRequest {
 
 message EchoResponse {
 	string message = 1;
+}
+
+message SpamRequest {
+	uint32 initial = 1;
+}
+
+message SpamResponse {
+	uint32 current = 1;
 }

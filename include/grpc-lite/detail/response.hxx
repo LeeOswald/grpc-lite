@@ -10,16 +10,16 @@
 namespace grpc_lite::detail
 {
 
-class GRPC_LITE_EXPORT response 
+class GRPC_LITE_EXPORT Response 
 {
 public:
-    response(int32_t id, status::code_t code = status::code_t::ok) 
+    Response(std::int32_t id, Status::Code code = Status::Code::ok)
         : m_id(id)
         , m_status(code) 
     {
     }
 
-    int32_t id() const noexcept 
+    std::int32_t id() const noexcept
     { 
         return m_id; 
     }
@@ -39,15 +39,15 @@ public:
         m_msg = std::move(d); 
     }
 
-    void status(class status&& s) noexcept 
+    void status(class Status&& s) noexcept 
     { 
         m_status = std::move(s); 
     }
 
 private:
-    int32_t m_id;
-    message m_msg;
-    class status m_status;
+    std::int32_t m_id;
+    Message m_msg;
+    class Status m_status;
 };
 
 

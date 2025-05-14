@@ -9,10 +9,10 @@
 namespace grpc_lite
 {
 
-class GRPC_LITE_EXPORT status 
+class GRPC_LITE_EXPORT Status 
 {
 public:
-    enum class code_t : int8_t 
+    enum class Code : std::int8_t
     {
         ok = 0,
         cancelled = 1,
@@ -33,13 +33,13 @@ public:
         unauthenticated = 16,
     };
 
-    constexpr status(code_t code = code_t::ok) noexcept
+    constexpr Status(Code code = Code::ok) noexcept
         : m_code(code)
         , m_str() 
     {
     }
 
-    status(code_t code, std::string&& details) noexcept
+    Status(Code code, std::string&& details) noexcept
         : m_code(code)
         , m_details(std::move(details))
         , m_str() 
@@ -51,7 +51,7 @@ public:
         return str(); 
     }
 
-    constexpr code_t code() const noexcept 
+    constexpr Code code() const noexcept 
     { 
         return m_code; 
     }
@@ -65,14 +65,14 @@ public:
     {
         if (m_str.empty()) 
         {
-            m_str = std::to_string(static_cast<int8_t>(m_code));
+            m_str = std::to_string(static_cast<std::int8_t>(m_code));
         }
 
         return m_str;
     }
 
 private:
-    code_t m_code;
+    Code m_code;
     std::string m_details;
     mutable std::string m_str;
 };

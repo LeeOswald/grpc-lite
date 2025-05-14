@@ -20,7 +20,7 @@ enum class Level
     Error
 };
 
-using TraceFn = std::function<void(Level level, std::uint32_t indent, std::string_view message)>;
+using TraceFn = std::function<void(Level level, std::uint32_t indent, std::string_view Message)>;
 
 
 GRPC_LITE_EXPORT TraceFn setTracer(TraceFn&& f); // NOT thread-safe

@@ -1,5 +1,5 @@
 #include <grpc-lite/asio/detail/connection.hxx>
-#include <grpc-lite/asio/detail/server.hxx>
+#include <grpc-lite/asio/detail/Server.hxx>
 
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
@@ -11,11 +11,11 @@
 namespace grpc_lite::asio::detail
 {
 
-boost::asio::awaitable<void> server::loop(boost::asio::ip::tcp::socket sock) 
+boost::asio::awaitable<void> Server::loop(boost::asio::ip::tcp::socket sock) 
 {
-    GrpcLiteVerboseBlock("{}.server::loop()", fmt::ptr(this));
+    GrpcLiteVerboseBlock("{}.Server::loop()", fmt::ptr(this));
 
-    detail::connection c(std::move(sock));
+    detail::Connection c(std::move(sock));
     while (c) 
     {
         for (const auto &req : co_await c.reqs()) 
@@ -31,9 +31,9 @@ boost::asio::awaitable<void> server::loop(boost::asio::ip::tcp::socket sock)
     }
 }
 
-boost::asio::awaitable<void> server::listen(std::string_view ip, std::uint16_t port) 
+boost::asio::awaitable<void> Server::listen(std::string_view ip, std::uint16_t port) 
 {
-    GrpcLiteVerboseBlock("{}.server::listen()", fmt::ptr(this));
+    GrpcLiteVerboseBlock("{}.Server::listen()", fmt::ptr(this));
 
     auto executor = co_await boost::asio::this_coro::executor;
 
@@ -48,9 +48,9 @@ boost::asio::awaitable<void> server::listen(std::string_view ip, std::uint16_t p
     }
 }
 
-void server::run(std::string_view ip, std::uint16_t port) 
+void Server::run(std::string_view ip, std::uint16_t port) 
 {
-    GrpcLiteVerboseBlock("{}.server::run()", fmt::ptr(this));
+    GrpcLiteVerboseBlock("{}.Server::run()", fmt::ptr(this));
 
     boost::asio::io_context ctx;
     co_spawn(ctx, listen(std::move(ip), std::move(port)), boost::asio::detached);

@@ -6,6 +6,6 @@
 namespace grpc_lite
 {
 
-using server = asio::detail::server;
+using Server = asio::detail::Server;
 
 } // namespace grpc_lite {}

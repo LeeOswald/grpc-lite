@@ -10,11 +10,11 @@
 namespace grpc_lite::detail
 {
 
-class GRPC_LITE_EXPORT message 
+class GRPC_LITE_EXPORT Message 
 {
 public:
-    message() = default;
-    message(std::string&& data);
+    Message() = default;
+    Message(std::string&& data);
 
     std::string bytes() const noexcept;
     void bytes(std::string_view bytes);

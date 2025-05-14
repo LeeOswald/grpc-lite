@@ -10,31 +10,45 @@
 namespace echo
 {
 
-using RpcEcho = grpc_lite::rpc<"echo", echo::EchoRequest, echo::EchoResponse>;
+using RpcEcho = grpc_lite::Rpc<"echo", echo::EchoRequest, echo::EchoResponse>;
+using RpcSpam = grpc_lite::Rpc<"spam", echo::SpamRequest, echo::SpamResponse>;
 
-using Service = grpc_lite::service<"echo.Echo", RpcEcho>;
+using Service = grpc_lite::Service<"echo.Echo", RpcEcho, RpcSpam>;
 
 struct EchoImpl 
 {
     template <typename T>
-    typename T::result_type call(grpc_lite::context&, const typename T::request_type&) 
+    typename T::result_type call(grpc_lite::Context&, const typename T::request_type&) 
     {
         GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
 
-        return { grpc_lite::status::code_t::unimplemented, std::nullopt };
+        return { grpc_lite::Status::Code::unimplemented, std::nullopt };
     }
+
+    std::uint32_t m_current = 0;
 };
 
 
 template <>
-RpcEcho::result_type EchoImpl::call<RpcEcho>(grpc_lite::context&, const EchoRequest& req)
+RpcEcho::result_type EchoImpl::call<RpcEcho>(grpc_lite::Context&, const EchoRequest& req)
 {
-    GrpcLiteVerboseBlock("{}", GRPC_LITE_FUNCTION);
+    GrpcLiteVerboseBlock("{}.EchoImpl::call<RpcEcho>()", fmt::ptr(this));
 
     EchoResponse res;
     res.set_message("Hello `" + req.message());
 
-    return { grpc_lite::status::code_t::ok, res };
+    return { grpc_lite::Status::Code::ok, res };
+}
+
+template <>
+RpcSpam::result_type EchoImpl::call<RpcSpam>(grpc_lite::Context&, const SpamRequest& req)
+{
+    GrpcLiteVerboseBlock("{}.EchoImpl::call<RpcSpam>()", fmt::ptr(this));
+
+    SpamResponse res;
+    res.set_current(m_current++);
+
+    return { grpc_lite::Status::Code::ok, res };
 }
 
 
@@ -51,7 +65,7 @@ int main(int argc, char** argv)
     echo::EchoImpl impl;
     echo::Service service(impl);
 
-    grpc_lite::server server;
+    grpc_lite::Server server;
     server.add(service);
 
     std::cout << "Listening on [127.0.0.1:7000]...\n";

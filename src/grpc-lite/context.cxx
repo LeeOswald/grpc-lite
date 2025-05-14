@@ -5,7 +5,7 @@
 namespace grpc_lite
 {
 
-context::context(const detail::request& req) noexcept 
+Context::Context(const detail::Request& req) noexcept 
 {
     for (const auto& [key, value] : req.metadata()) 
     {
@@ -13,7 +13,7 @@ context::context(const detail::request& req) noexcept
     }
 }
 
-context::meta_t::mapped_type context::meta(meta_t::key_type key) const noexcept 
+Context::Meta::mapped_type Context::meta(Meta::key_type key) const noexcept 
 {
     const auto it = m_meta.find(key);
     if (it == m_meta.end()) 

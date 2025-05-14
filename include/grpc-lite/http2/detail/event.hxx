@@ -10,11 +10,11 @@
 namespace grpc_lite::http2::detail
 {
 
-struct event 
+struct Event 
 {
-    using header_t = std::optional<class header>;
+    using Header = std::optional<class Header>;
 
-    enum class type_t : std::uint8_t
+    enum class Type : std::uint8_t
     {
         noop = 0,
         stream_close,
@@ -25,9 +25,9 @@ struct event
 
     std::string_view data;
     std::int32_t stream_id = -1;
-    type_t type = type_t::noop;
+    Type type = Type::noop;
 
-    header_t header = std::nullopt;
+    Header header = std::nullopt;
 };
 
 } // namespace grpc_lite::http2::detail {}

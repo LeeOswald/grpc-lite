@@ -12,19 +12,19 @@ namespace grpc_lite
 {
 
 
-template <fixed_string _Method, typename _Request, typename _Response> 
-struct rpc 
+template <FixedString _Method, typename _Request, typename _Response> 
+struct Rpc 
 {
     static constexpr std::string_view method{ _Method };
 
-    using method_type = fixed_string_t<_Method>;
+    using method_type = StringLiteral<_Method>;
     using request_type = _Request;
     using response_type = _Response;
     using optional_response_type = std::optional<response_type>;
 
     struct result_type 
     {
-        class status status;
+        class Status status;
         optional_response_type response;
     };
 

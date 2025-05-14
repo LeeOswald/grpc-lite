@@ -12,21 +12,21 @@ using ssize_t = std::make_signed_t<std::size_t>;
 namespace grpc_lite::http2::detail
 {
 
-class GRPC_LITE_EXPORT session 
+class GRPC_LITE_EXPORT Session 
 {
 public:
-    using events_t = std::vector<event>;
+    using Events = std::vector<Event>;
 
-    session();
-    session(const session &) = delete;
+    Session();
+    Session(const Session &) = delete;
 
-    ~session();
+    ~Session();
 
-    void headers(std::int32_t stream_id, detail::headers hdrs) const;
+    void headers(std::int32_t stream_id, detail::Headers hdrs) const;
     void data(std::int32_t stream_id, std::string &&data);
-    void trailers(std::int32_t stream_id, detail::headers hdrs) const;
+    void trailers(std::int32_t stream_id, detail::Headers hdrs) const;
 
-    events_t read(std::string_view bytes);
+    Events read(std::string_view bytes);
     std::string_view pending();
 
 private:
@@ -73,10 +73,10 @@ private:
         void* vsess
     );
 
-    void emit(event&& ev) noexcept;
+    void emit(Event&& ev) noexcept;
 
     std::string m_data;
-    events_t m_events;
+    Events m_events;
     nghttp2_session* m_session;
 };
 

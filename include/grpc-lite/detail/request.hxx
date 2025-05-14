@@ -10,19 +10,19 @@
 namespace grpc_lite::detail
 {
 
-class GRPC_LITE_EXPORT request 
+class GRPC_LITE_EXPORT Request 
 {
 public:
-    using metadata_t = std::unordered_map<std::string, std::string>;
+    using Metadata = std::unordered_map<std::string, std::string>;
 
-    request(request&&) = default;
-    request(const request&) = delete;
+    Request(Request&&) = default;
+    Request(const Request&) = delete;
     
-    request(int32_t id);
+    Request(int32_t id);
 
     operator bool() const noexcept;
 
-    int32_t id() const noexcept 
+    std::int32_t id() const noexcept
     { 
         return m_id; 
     }
@@ -32,7 +32,7 @@ public:
         return m_msg.data(); 
     }
 
-    const metadata_t& metadata() const noexcept 
+    const Metadata& metadata() const noexcept 
     { 
         return m_metadata; 
     }
@@ -54,7 +54,7 @@ public:
     void read(const std::string_view data) noexcept;
 
 private:
-    enum class flags_t : uint8_t 
+    enum class Flags : std::uint8_t
     {
         invalid = 0x01,
         header_method = 0x02,          // :method
@@ -62,20 +62,20 @@ private:
         header_content_type = 0x08,    // content-type
     };
 
-    void flag(flags_t f) noexcept 
+    void flag(Flags f) noexcept 
     { 
-        m_flags |= static_cast<uint8_t>(f); 
+        m_flags |= static_cast<std::uint8_t>(f);
     }
 
-    bool flag(flags_t f) const noexcept 
+    bool flag(Flags f) const noexcept 
     {
-        return ((m_flags & static_cast<uint8_t>(f)) == static_cast<uint8_t>(f));
+        return ((m_flags & static_cast<std::uint8_t>(f)) == static_cast<std::uint8_t>(f));
     }
 
-    uint8_t m_flags = 0x00;
-    int32_t m_id;
-    metadata_t m_metadata;
-    message m_msg;
+    std::uint8_t m_flags = 0x00;
+    std::int32_t m_id;
+    Metadata m_metadata;
+    Message m_msg;
     std::string m_method;
     std::string m_service;
 };

@@ -10,20 +10,20 @@
 namespace grpc_lite::http2::detail
 {
 
-struct header 
+struct Header 
 {
     std::string name;
     std::string value;
 };
 
-struct header_view 
+struct HeaderView 
 {
     std::string_view name;
     std::string_view value;
 };
 
 
-using headers = std::vector<header_view>;
+using Headers = std::vector<HeaderView>;
 
 
 } // namespace grpc_lite::http2::detail {}

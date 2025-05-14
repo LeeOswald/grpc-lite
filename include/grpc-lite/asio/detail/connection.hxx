@@ -15,14 +15,14 @@
 namespace grpc_lite::asio::detail
 {
 
-class GRPC_LITE_EXPORT connection 
+class GRPC_LITE_EXPORT Connection 
 {
 public:
-    using requests_t = std::forward_list<::grpc_lite::detail::request>;
-    using streams_t = std::unordered_map<int32_t, ::grpc_lite::detail::request>;
+    using requests_t = std::forward_list<::grpc_lite::detail::Request>;
+    using streams_t = std::unordered_map<int32_t, ::grpc_lite::detail::Request>;
 
-    connection(const connection &) = delete;
-    connection(boost::asio::ip::tcp::socket&& sock) noexcept;
+    Connection(const Connection &) = delete;
+    Connection(boost::asio::ip::tcp::socket&& sock) noexcept;
 
     operator bool() const noexcept 
     { 
@@ -30,11 +30,11 @@ public:
     }
 
     boost::asio::awaitable<requests_t> reqs() noexcept;
-    boost::asio::awaitable<void> write(::grpc_lite::detail::response resp) noexcept;
+    boost::asio::awaitable<void> write(::grpc_lite::detail::Response resp) noexcept;
 
 private:
     template <std::size_t N> 
-    class buffer_t 
+    class Buffer 
     {
     public:
         constexpr char *data() noexcept 
@@ -54,9 +54,9 @@ private:
     requests_t read(std::size_t n);
     boost::asio::awaitable<void> write();
 
-    buffer_t<1024> m_buffer; // FIXME: make size configurable
+    Buffer<1024> m_buffer; // FIXME: make size configurable
     bool m_eos = false;
-    http2::detail::session m_session;
+    http2::detail::Session m_session;
     streams_t m_streams;
     boost::asio::ip::tcp::socket m_socket;
 };

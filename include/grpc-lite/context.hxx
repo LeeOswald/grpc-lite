@@ -12,28 +12,28 @@ namespace grpc_lite
 namespace detail 
 {
 
-class request;
+class Request;
 
 } // namespace detail {}
 
 
-class GRPC_LITE_EXPORT context 
+class GRPC_LITE_EXPORT Context 
 {
 public:
-    using meta_t = std::unordered_map<std::string_view, std::string_view>;
+    using Meta = std::unordered_map<std::string_view, std::string_view>;
 
-    context() = default;
+    Context() = default;
     
-    context(context&&) = default;
+    Context(Context&&) = default;
     
-    context(const context&) = delete;
+    Context(const Context&) = delete;
 
-    context(const detail::request &req) noexcept;
+    Context(const detail::Request &req) noexcept;
 
-    meta_t::mapped_type meta(meta_t::key_type key) const noexcept;
+    Meta::mapped_type meta(Meta::key_type key) const noexcept;
 
 private:
-    meta_t m_meta;
+    Meta m_meta;
 };
 
 
