@@ -1,4 +1,4 @@
-#include <grpc-lite/asio/detail/Connection.hxx>
+#include <grpc-lite/asio/detail/connection.hxx>
 
 #include <boost/asio/as_tuple.hpp>
 #include <boost/asio/use_awaitable.hpp>

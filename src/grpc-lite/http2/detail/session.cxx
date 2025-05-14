@@ -1,4 +1,4 @@
-#include <grpc-lite/http2/detail/Session.hxx>
+#include <grpc-lite/http2/detail/session.hxx>
 
 #include <array>
 #include <cstdint>
@@ -187,7 +187,7 @@ std::string_view Session::pending()
     auto n = ::nghttp2_session_mem_send2(m_session, &bytes);
     if (n < 0) 
     {
-        throw std::runtime_error(std::string("Failed to retrieve pending Session data: ") + ::nghttp2_strerror(n));
+        throw std::runtime_error(std::string("Failed to retrieve pending session data: ") + ::nghttp2_strerror(n));
     }
 
     return { reinterpret_cast<const char*>(bytes), static_cast<size_t>(n) };
@@ -199,7 +199,7 @@ Session::Events Session::read(std::string_view bytes)
 
     if (auto n = ::nghttp2_session_mem_recv2(m_session, reinterpret_cast<const uint8_t*>(bytes.data()), bytes.size()); n < 0) 
     {
-        throw std::runtime_error(std::string("Failed to read Session data: ") + ::nghttp2_strerror(n));
+        throw std::runtime_error(std::string("Failed to read session data: ") + ::nghttp2_strerror(n));
     }
 
     auto events = m_events;

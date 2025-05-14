@@ -1,4 +1,4 @@
-#include <grpc-lite/detail/Message.hxx>
+#include <grpc-lite/detail/message.hxx>
 
 #include <array>
 #include <stdexcept>

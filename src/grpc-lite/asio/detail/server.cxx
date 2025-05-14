@@ -1,5 +1,5 @@
 #include <grpc-lite/asio/detail/connection.hxx>
-#include <grpc-lite/asio/detail/Server.hxx>
+#include <grpc-lite/asio/detail/server.hxx>
 
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
