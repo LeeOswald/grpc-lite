@@ -1,6 +1,6 @@
 #include <grpc-lite/debug.hxx>
 
-
+#include <cctype>
 #include <iostream>
 #include <sstream>
 #include <syncstream>
@@ -107,6 +107,65 @@ GRPC_LITE_EXPORT TraceFn setTracer(TraceFn&& f)
 GRPC_LITE_EXPORT void writeln(Level level, std::string_view message)
 {
     g_Tracer(level, g_indent, message);
+}
+
+GRPC_LITE_EXPORT std::string binaryToHex(std::string_view binary)
+{
+    auto halfByteToStr = [](std::uint8_t half) -> char
+    {
+        static const char HexChars[16] =
+        {
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+        };
+
+        assert(half < 16);
+        return HexChars[half];
+    };
+
+    auto p = reinterpret_cast<const std::uint8_t*>(binary.data());
+    auto len = binary.size();
+
+    std::ostringstream ss;
+    bool first = true;
+
+    while (len)
+    {
+        if (first)
+            first = false;
+        else
+            ss << ' ';
+
+        auto hi = (*p) >> 4;
+        auto lo = (*p) & 0x0f;
+
+        ss << halfByteToStr(hi) << halfByteToStr(lo);
+
+        ++p;
+        --len;
+    }
+
+    return ss.str();
+}
+
+GRPC_LITE_EXPORT std::string binaryToAscii(std::string_view binary)
+{
+    auto p = reinterpret_cast<const std::uint8_t*>(binary.data());
+    auto len = binary.size();
+
+    std::ostringstream ss;
+
+    while (len)
+    {
+        if (std::isprint(*p))
+            ss << static_cast<char>(*p);
+        else
+            ss << '.';
+
+        ++p;
+        --len;
+    }
+
+    return ss.str();
 }
 
 

@@ -35,7 +35,7 @@ RpcEcho::result_type EchoImpl::call<RpcEcho>(grpc_lite::Context&, const EchoRequ
     GrpcLiteVerboseBlock("{}.EchoImpl::call<RpcEcho>()", fmt::ptr(this));
 
     EchoResponse res;
-    res.set_message("Hello `" + req.message());
+    res.set_message("Hello " + req.message());
 
     return { grpc_lite::Status::Code::ok, res };
 }

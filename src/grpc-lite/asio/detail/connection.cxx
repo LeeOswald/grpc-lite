@@ -23,11 +23,13 @@ Connection::requests_t Connection::read(std::size_t n)
     {
         if (ev.stream_id <= 0) 
         {
+            GrpcLiteVerbose("invalid stream id {}", ev.stream_id);
             continue;
         }
 
         if (ev.type == http2::detail::Event::Type::stream_close) 
         {
+            GrpcLiteVerbose("rd -> CLOSE");
             m_streams.erase(ev.stream_id);
             continue;
         }
@@ -39,12 +41,14 @@ Connection::requests_t Connection::read(std::size_t n)
         {
         case http2::detail::Event::Type::stream_data: 
         {
+            GrpcLiteVerbose("rd -> data");
             req.read(ev.data);
             break;
         }
 
         case http2::detail::Event::Type::stream_end: 
         {
+            GrpcLiteVerbose("rd -> EOS");
             reqs.push_front(std::move(req));
             m_streams.erase(ev.stream_id);
             break;
@@ -52,11 +56,13 @@ Connection::requests_t Connection::read(std::size_t n)
 
         case http2::detail::Event::Type::stream_header: 
         {
+            GrpcLiteVerbose("rd -> header");
             req.header(std::move(ev.header->name), std::move(ev.header->value));
             break;
         }
 
         default:
+            GrpcLiteVerbose("rd -> \?\?\?");
             break;
         }
     }
@@ -102,6 +108,7 @@ boost::asio::awaitable<void> Connection::write()
 
     for (auto chunk = m_session.pending(); chunk.size() > 0; chunk = m_session.pending()) 
     {
+        GrpcLiteVerbose("wr -> [{}] [{}]", debug::binaryToHex(chunk), debug::binaryToAscii(chunk));
         co_await boost::asio::async_write(m_socket, boost::asio::buffer(chunk), boost::asio::use_awaitable);
     }
 }

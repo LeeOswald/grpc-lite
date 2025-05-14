@@ -4,6 +4,7 @@
 #include <grpc-lite/grpc-lite.hxx>
 #endif
 
+#include <cassert>
 #include <functional>
 #include <string>
 
@@ -72,6 +73,9 @@ private:
     void unindent() noexcept;
 };
 
+
+GRPC_LITE_EXPORT std::string binaryToHex(std::string_view binary);
+GRPC_LITE_EXPORT std::string binaryToAscii(std::string_view binary);
 
 } // namespace grpc_lite::debug {}
 

@@ -93,7 +93,7 @@ bool Request::invalid() const noexcept
 
 void Request::read(const std::string_view data) noexcept 
 {
-    GrpcLiteVerboseBlock("{}.Request::read(len={})", fmt::ptr(this), data.length());
+    GrpcLiteVerboseBlock("{}.Request::read(len={}: [{}] [{}])", fmt::ptr(this), data.length(), debug::binaryToHex(data), debug::binaryToAscii(data));
 
     if (invalid()) 
     {
