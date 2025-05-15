@@ -28,8 +28,8 @@ detail::Response ServerBase::process(const detail::Request& req) const noexcept
     try 
     {
         auto r = it->second(ctx, req.method(), req.data());
-        resp.status(std::move(r.first));
-        resp.data(std::move(r.second));
+        resp.setStatus(std::move(r.first));
+        resp.setData(std::move(r.second));
     }
     catch (std::exception& e) 
     {

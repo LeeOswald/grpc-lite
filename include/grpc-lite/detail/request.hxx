@@ -47,7 +47,7 @@ public:
         return m_service; 
     }
 
-    void header(std::string&& name, std::string&& value) noexcept;
+    void setHeader(std::string&& name, std::string&& value) noexcept;
 
     bool invalid() const noexcept;
 
@@ -62,12 +62,12 @@ private:
         header_content_type = 0x08,    // content-type
     };
 
-    void flag(Flags f) noexcept 
+    void setFlag(Flags f) noexcept
     { 
         m_flags |= static_cast<std::uint8_t>(f);
     }
 
-    bool flag(Flags f) const noexcept 
+    bool hasFlag(Flags f) const noexcept 
     {
         return ((m_flags & static_cast<std::uint8_t>(f)) == static_cast<std::uint8_t>(f));
     }

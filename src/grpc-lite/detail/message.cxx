@@ -12,7 +12,7 @@ Message::Message(std::string&& data)
     : m_data(std::move(data))
     , m_length(static_cast<std::uint32_t>(data.size())) 
 {
-    GrpcLiteVerboseBlock("{}.Message::Message()", fmt::ptr(this));
+    GrpcLiteVerboseBlock("{}.Message::Message([{}] [{}])", fmt::ptr(this), debug::binaryToHex(m_data), debug::binaryToAscii(m_data));
 
     std::uint32_t size = m_length.value();
 
@@ -31,9 +31,9 @@ std::string Message::bytes() const noexcept
     return m_prefix + m_data;
 }
 
-void Message::bytes(std::string_view bytes) 
+void Message::setBytes(std::string_view bytes) 
 {
-    GrpcLiteVerboseBlock("{}.Message::bytes(len={})", fmt::ptr(this), bytes.length());
+    GrpcLiteVerboseBlock("{}.Message::setBytes([{}] [{}])", fmt::ptr(this), debug::binaryToHex(bytes), debug::binaryToAscii(bytes));
 
     if (m_length && m_data.size() >= m_length.value()) 
     {

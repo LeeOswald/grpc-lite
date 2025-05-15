@@ -22,9 +22,9 @@ public:
 
     ~Session();
 
-    void headers(std::int32_t stream_id, detail::Headers hdrs) const;
-    void data(std::int32_t stream_id, std::string &&data);
-    void trailers(std::int32_t stream_id, detail::Headers hdrs) const;
+    void setHeaders(std::int32_t stream_id, detail::Headers hdrs) const;
+    void setData(std::int32_t stream_id, std::string &&data);
+    void setTrailers(std::int32_t stream_id, detail::Headers hdrs) const;
 
     Events read(std::string_view bytes);
     std::string_view pending();

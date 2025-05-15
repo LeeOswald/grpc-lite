@@ -57,7 +57,7 @@ Connection::requests_t Connection::read(std::size_t n)
         case http2::detail::Event::Type::stream_header: 
         {
             GrpcLiteVerbose("rd -> header");
-            req.header(std::move(ev.header->name), std::move(ev.header->value));
+            req.setHeader(std::move(ev.header->name), std::move(ev.header->value));
             break;
         }
 
@@ -117,18 +117,18 @@ boost::asio::awaitable<void> Connection::write(::grpc_lite::detail::Response res
 {
     GrpcLiteVerboseBlock("{}.Connection::write(resp)", fmt::ptr(this));
 
-    m_session.headers(
+    m_session.setHeaders(
         resp.id(),
         {
             {":status", "200"},
             {"content-type", "application/grpc"},
         });
 
-    m_session.data(resp.id(), resp.bytes());
+    m_session.setData(resp.id(), resp.bytes());
     co_await write();
 
     const auto &status = resp.status();
-    m_session.trailers(
+    m_session.setTrailers(
         resp.id(),
         {
             {"grpc-status", status},

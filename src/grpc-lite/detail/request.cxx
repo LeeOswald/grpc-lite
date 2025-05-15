@@ -7,7 +7,7 @@ namespace grpc_lite::detail
 Request::Request(int32_t id) 
     : m_id(id) 
 {
-    GrpcLiteVerboseBlock("{}.Request::Request()", fmt::ptr(this));
+    GrpcLiteVerboseBlock("{}.Request::Request(id={})", fmt::ptr(this), id);
 }
 
 Request::operator bool() const noexcept 
@@ -15,9 +15,9 @@ Request::operator bool() const noexcept
     return (!invalid() && !m_service.empty() && !m_method.empty());
 }
 
-void Request::header(std::string&& name, std::string&& value) noexcept 
+void Request::setHeader(std::string&& name, std::string&& value) noexcept 
 {
-    GrpcLiteVerboseBlock("{}.Request::header({}={})", fmt::ptr(this), name, value);
+    GrpcLiteVerboseBlock("{}.Request::setHeader({}={})", fmt::ptr(this), name, value);
 
     // Avoid processing further if the request is already invalid
     if (invalid()) 
@@ -27,11 +27,11 @@ void Request::header(std::string&& name, std::string&& value) noexcept
 
     if (name == ":method") 
     {
-        flag(Flags::header_method);
+        setFlag(Flags::header_method);
 
         if (value != "POST") 
         {
-            flag(Flags::invalid);
+            setFlag(Flags::invalid);
         }
 
         return;
@@ -39,18 +39,18 @@ void Request::header(std::string&& name, std::string&& value) noexcept
 
     if (name == ":path") 
     {
-        flag(Flags::header_path);
+        setFlag(Flags::header_path);
 
         if (value.front() != '/') 
         {
-            flag(Flags::invalid);
+            setFlag(Flags::invalid);
             return;
         }
 
         const auto n = value.find('/', 1);
         if (n == std::string::npos) 
         {
-            flag(Flags::invalid);
+            setFlag(Flags::invalid);
             return;
         }
 
@@ -58,7 +58,7 @@ void Request::header(std::string&& name, std::string&& value) noexcept
         m_method = value.substr(n + 1);
         if (m_method.empty()) 
         {
-            flag(Flags::invalid);
+            setFlag(Flags::invalid);
             return;
         }
 
@@ -67,11 +67,11 @@ void Request::header(std::string&& name, std::string&& value) noexcept
 
     if (name == "content-type") 
     {
-        flag(Flags::header_content_type);
+        setFlag(Flags::header_content_type);
 
         if (!value.starts_with("application/grpc")) 
         {
-            flag(Flags::invalid);
+            setFlag(Flags::invalid);
         }
 
         return;
@@ -88,12 +88,12 @@ void Request::header(std::string&& name, std::string&& value) noexcept
 
 bool Request::invalid() const noexcept 
 {
-    return flag(Flags::invalid);
+    return hasFlag(Flags::invalid);
 }
 
 void Request::read(const std::string_view data) noexcept 
 {
-    GrpcLiteVerboseBlock("{}.Request::read(len={}: [{}] [{}])", fmt::ptr(this), data.length(), debug::binaryToHex(data), debug::binaryToAscii(data));
+    GrpcLiteVerboseBlock("{}.Request::read([{}] [{}])", fmt::ptr(this), debug::binaryToHex(data), debug::binaryToAscii(data));
 
     if (invalid()) 
     {
@@ -102,11 +102,11 @@ void Request::read(const std::string_view data) noexcept
 
     try 
     {
-        m_msg.bytes(data);
+        m_msg.setBytes(data);
     }
     catch (...) 
     {
-        flag(Flags::invalid);
+        setFlag(Flags::invalid);
     }
 }
 

@@ -34,12 +34,12 @@ public:
         return m_status; 
     }
 
-    void data(std::string&& d) noexcept 
+    void setData(std::string&& d) noexcept 
     { 
         m_msg = std::move(d); 
     }
 
-    void status(class Status&& s) noexcept 
+    void setStatus(class Status&& s) noexcept 
     { 
         m_status = std::move(s); 
     }

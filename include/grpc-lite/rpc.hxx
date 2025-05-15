@@ -30,7 +30,7 @@ struct Rpc
 
     request_type map(std::string_view data) const 
     {
-        GrpcLiteVerboseBlock("{}.rpc::map(len={})", fmt::ptr(this), data.length());
+        GrpcLiteVerboseBlock("{}.rpc::map(data=[{}] [{}])", fmt::ptr(this), debug::binaryToHex(data), debug::binaryToAscii(data));
 
         constexpr bool can_map = requires(request_type t) 
         {
@@ -62,6 +62,7 @@ struct Rpc
 
         if (!res) 
         {
+            GrpcLiteVerbose("resp -> {}");
             return {};
         }
 
@@ -70,6 +71,8 @@ struct Rpc
         {
             throw std::runtime_error("Failed to serialize data");
         }
+
+        GrpcLiteVerbose("resp -> [{}] [{}])", debug::binaryToHex(data), debug::binaryToAscii(data));
 
         return data;
     }

@@ -17,7 +17,7 @@ public:
     Message(std::string&& data);
 
     std::string bytes() const noexcept;
-    void bytes(std::string_view bytes);
+    void setBytes(std::string_view bytes);
 
     std::string_view data() const noexcept;
     std::string_view prefix() const noexcept;
